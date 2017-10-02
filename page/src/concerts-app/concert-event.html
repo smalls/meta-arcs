@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="concert-event">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 16px;
+      }
+
+      image-box {
+        float: right;
+      }
+    </style>
+
+    <div itemscope itemtype="http://schema.org/Event">
+      <div>
+        <a itemprop="url" href="[[event.url]]"><span itemprop="name">[[event.name]]</span></a>
+        <div>is playing on
+          <time itemprop="startDate" datetime="[[startDate]]">[[event.startDate]]</time> at the 
+          <span itemprop="location">[[event.location]]</span>
+      </div>
+      <div>
+      <div class="image-box">
+        <img src="[[event.image]]">
+      </div>
+    </div>
+  </template>
+  <script>
+    // Your new element extends the Polymer.Element base class
+    class ConcertEvent extends Polymer.Element {
+      static get is() { return 'concert-event'; }
+      static get properties() {
+        return {
+          event: {
+            type: Object
+          }
+        };
+      }
+    }
+    //Now, register your new custom element so the browser can use it
+    window.customElements.define(ConcertEvent.is, ConcertEvent);
+  </script>
+</dom-module>
+
