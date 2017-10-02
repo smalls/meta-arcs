@@ -1,2 +1,2 @@
-page/bower_components/**
-page/build/**
+bower_components/**
+build/**
