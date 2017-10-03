@@ -1,7 +1,0 @@
-{
-  "name": "concerts",
-  "short_name": "concerts",
-  "description": "upcoming concerts",
-  "start_url": "/",
-  "display": "standalone"
-}
