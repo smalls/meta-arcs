@@ -9,8 +9,6 @@
 import 'CustomEvent.manifest'
 import 'ShowCustomEvents.manifest'
 
-view CustomEvents of [CustomEvent] #browserContext in 'foo.json'
-
 recipe
   copy as events
 
