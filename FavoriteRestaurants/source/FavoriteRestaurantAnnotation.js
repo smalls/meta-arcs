@@ -27,7 +27,12 @@ defineParticle(({DomParticle}) => {
 <div ${host} id={{subId}}>{{aFavoriteRestaurant}}</div>
 
 <template someones-favorite-restaurant>
-  <span>This is one of your favorite restaurants!</span>
+  <span hidden="{{hideFavorites}}">
+    <i class="material-icons" title="This is one of your favorite restaurants!" on-click="_onClickFavorite" key="{{identifier}}">favorite</i>
+  </span>
+  <span hidden="{{hideUnfavorites}}">
+    <i class="material-icons" title="Not a favorite" on-click="_onClickUnfavorite" key="{{identifier}}">favorite_border</i>
+  </span>
 </template>
 
     `.trim();
@@ -42,9 +47,7 @@ defineParticle(({DomParticle}) => {
     _render(props, state) {
       const favoriteNames = props.favorites.map(favorite => favorite.name);
       const items = props.restaurants.map(restaurant => this._renderFavorites(restaurant, favoriteNames))
-      return {
-        items: items
-      };
+      return { items };
     }
     _renderFavorites(restaurant, favoriteNames) {
       const isFavorite = favoriteNames.includes(restaurant.name);
@@ -53,9 +56,31 @@ defineParticle(({DomParticle}) => {
         subId: restaurant.id,
         aFavoriteRestaurant: {
           $template: 'someones-favorite-restaurant',
-          models: isFavorite ? [{name: restaurant.name}] : []
+          models: [{hideUnfavorites: isFavorite, hideFavorites: !isFavorite, name: restaurant.name, identifier: restaurant.identifier}]
         }
       };
+    }
+    _onClickFavorite(e, state, views) {
+      var favorites = views.get('favorites');
+      var key = e.data.key;
+
+      views.get('favorites').toList().then(favoritesList => {
+        let toRemoves = favoritesList.filter(elem => elem.rawData.placesId == key);
+        toRemoves.forEach(toRemove => favorites.remove(toRemove));
+      });
+    }
+    _onClickUnfavorite(e, state, views) {
+      var key = e.data.key;
+      var favorites = views.get('favorites');
+      views.get('restaurants').toList().then(restaurantsList => {
+        restaurantsList.filter(r => r.identifier == key).forEach(restaurant => {
+          favorites.store(new favorites.entityClass({
+            placesId: restaurant.identifier,
+            name: restaurant.name,
+            address: restaurant.address
+          }));
+        });
+      });
     }
   };
 });

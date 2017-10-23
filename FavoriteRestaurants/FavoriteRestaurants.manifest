@@ -18,8 +18,8 @@ recipe
     person <- person
 
 recipe
-  map #favoriterestaurants as favrestaurants
+  use #favoriterestaurants as favrestaurants
   use as restaurants
   FavoriteRestaurantAnnotation
     restaurants <- restaurants
-    favorites <- favrestaurants
+    favorites = favrestaurants

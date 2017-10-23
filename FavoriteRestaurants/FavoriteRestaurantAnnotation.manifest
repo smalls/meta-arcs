@@ -10,7 +10,7 @@ import 'https://sjmiles.github.io/arc-stories/0.2/Restaurants/Restaurant.schema'
 import 'FavoriteRestaurant.schema'
 
 particle FavoriteRestaurantAnnotation in 'source/FavoriteRestaurantAnnotation.js'
-  FavoriteRestaurantAnnotation(in [Restaurant] restaurants, in [FavoriteRestaurant] favorites)
+  FavoriteRestaurantAnnotation(in [Restaurant] restaurants, inout [FavoriteRestaurant] favorites)
   affordance dom
   consume set of annotation
   description `check restaurants for favorites`
