@@ -15,18 +15,20 @@ start_server() {
 
 	cd $SERVER
 	echo "serve ${SERVER} on port ${PORT} from `pwd`"
-	../server.py -p ${PORT} &> ../logs/${SERVER}.log &
+	../server.py -p ${PORT} &> ../logs/${SERVER}-${PORT}.log &
 	cd ..
 }
 
 # kill the subprocesses when exiting this process
+# to double-check: ps -o pid,ppid,pgid,cmd
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 
-start_server "arcs-particles" 8888
-start_server "arc-stories" 8080
 start_server "arcs-cdn" 5001
+
+start_server "arc-stories" 8080
+
+start_server "arcs-particles" 8888
 start_server "arcs-custom-events" 9999
 
-LOGS="logs/arcs-particles.log logs/arc-stories.log logs/arcs-cdn.log logs/arcs-events.log"
-parallel --tagstring "{} " --line-buffer tail -f \{\} ::: ${LOGS}
+parallel --tagstring "{/.}:" --line-buffer tail -f \{\} ::: logs/*.log
