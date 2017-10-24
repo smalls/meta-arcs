@@ -1,14 +1,32 @@
 #!/bin/sh
+#
+# Copyright (c) 2017 Google Inc. All rights reserved.
+# This code may only be used under the BSD style license found at
+# http://polymer.github.io/LICENSE.txt
+# Code distributed by Google as part of this project is also
+# subject to an additional IP rights grant found at
+# http://polymer.github.io/PATENTS.txt
 
+start_server() {
+	SERVER=$1
+	PORT=$2
+
+	cat /dev/null > logs/${SERVER}.log
+
+	cd $SERVER
+	echo "serve ${SERVER} on port ${PORT} from `pwd`"
+	../server.py -p ${PORT} &> ../logs/${SERVER}.log &
+	cd ..
+}
+
+# kill the subprocesses when exiting this process
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
+
+start_server "arcs-particles" 8888
+start_server "arc-stories" 8080
+start_server "arcs-cdn" 5001
+start_server "arcs-custom-events" 9999
+
 LOGS="logs/arcs-particles.log logs/arc-stories.log logs/arcs-cdn.log logs/arcs-events.log"
-rm $LOGS
-
-(cd arcs-particles && ../server.py -p 8888 > ../logs/arcs-particles.log &)
-(cd arc-stories && ../server.py -p 8080 > ../logs/arc-stories.log &)
-(cd arcs-cdn && ../server.py -p 5001 > ../logs/arcs-cdn.log &)
-(cd arcs-custom-events && ../server.py -p 9999 > ../logs/arcs-events.log &)
-
-sleep 1s
-tail -f $LOGS
+parallel --tagstring "{} " --line-buffer tail -f \{\} ::: ${LOGS}
