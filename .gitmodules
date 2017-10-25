@@ -1,6 +1,6 @@
 [submodule "arc-stories"]
 	path = arc-stories
-	url = git@github.com:smalls/arc-stories.git
+	url = https://github.com/smalls/arc-stories.git
 [submodule "arcs-cdn"]
 	path = arcs-cdn
-	url = git@github.com:smalls/arcs-cdn.git
+	url = https://github.com/smalls/arcs-cdn.git
