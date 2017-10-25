@@ -1,12 +1,6 @@
-[submodule "arcs-particles"]
-	path = arcs-particles
-	url = git@github.com:smalls/arcs-particles.git
 [submodule "arc-stories"]
 	path = arc-stories
 	url = git@github.com:smalls/arc-stories.git
 [submodule "arcs-cdn"]
 	path = arcs-cdn
 	url = git@github.com:smalls/arcs-cdn.git
-[submodule "arcs-custom-events"]
-	path = arcs-custom-events
-	url = git@github.com:smalls/arcs-custom-events.git
